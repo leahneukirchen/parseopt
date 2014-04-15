@@ -1,0 +1,13 @@
+This is parseopt, a collection of POSIX-compatible argument parsing functions.
+http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap12.html#tag_12_02
+
+parseopt: a helper for shell scripts, works with POSIX sh, dash, bash, mksh, zsh
+parseopt.rb: for Ruby
+parseopt.tiny.rb: tiny version without error checking, suitable for copy-paste
+parseopt.go: for Go
+
+To the extent possible under law, the creator of this work has waived
+all copyright and related or neighboring rights to this work.
+http://creativecommons.org/publicdomain/zero/1.0/
+
+---Christian Neukirchen,  15apr2014  +chris+
