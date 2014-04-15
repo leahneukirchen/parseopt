@@ -1,0 +1,64 @@
+#!/bin/sh
+# parseopt OPTSTRING ARGS... - sane POSIX getopt(s) alternative
+#
+# Parses ARGS using OPTSTRING consisting of single-letter characters,
+# possibly followed by : for options taking an argument.
+# Parsing stops at -- or the first argument not starting with -.
+# Option flags define $optX to the value passed.
+# Boolean flags define $optX to -X if set for easier passing along.
+# Unset flags result in unset variables.
+# Leftover arguments remain in $@.
+
+# Example:
+#
+# set -- -vr foo
+# eval $(parseopt ar:v "$@")
+# [ -n "$optv" ] && echo $optr "$@"
+
+# To the extent possible under law, the creator of this work has waived
+# all copyright and related or neighboring rights to this work.
+# http://creativecommons.org/publicdomain/zero/1.0/
+
+flags=$1
+shift
+
+fatal() {
+  printf "$@" 1>&2
+  exit 1
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+  --)
+    shift
+    break;;
+  -?*)
+    arg=${1#?}
+    while [ -n "$arg" ]; do
+      f=$(printf %.1s "$arg")
+      arg=${arg#?}
+      
+      case "$flags" in
+        *$f:*)
+          if [ -z "$arg" ]; then
+            shift
+            [ $# -gt 0 ] || fatal 'no argument for -%s\n' "$f"
+            arg=$1
+          fi
+          printf 'opt%s=%s\n' "$f" "$arg"
+          break;;
+        *$f*)
+          printf 'opt%s=%s\n' "$f" "-$f";;
+        *)
+          fatal 'invalid option -%s\n' "$f"
+      esac
+    done;;
+  *)
+    break
+  esac
+  shift
+done
+
+echo 'set -- \'
+for i do printf '%s\n' "$i" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/' \\\\/" ; done
+echo ' '
