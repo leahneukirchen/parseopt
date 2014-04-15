@@ -6,6 +6,7 @@
 # Parsing stops at -- or the first argument not starting with -.
 # Option flags define $optX to the value passed.
 # Boolean flags define $optX to -X if set for easier passing along.
+# Boolean flags stack like setting $optX to -XXX if passed three times.
 # Unset flags result in unset variables.
 # Leftover arguments remain in $@.
 
