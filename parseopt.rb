@@ -6,7 +6,7 @@ def parseopt(param, argv=ARGV)
 
     while (f = z.shift) && (param =~ /#{f}(:?)/ or abort "invalid flag -#{f}")
       if $1.empty?
-        opts[f] = (opts[f] ||= 0) + 1
+        opts[f] = (opts[f] ||= "-") + f
       else
         opts[f] = (z.empty? ? argv.shift : z.join) or
           abort "missing parameter for -#{f}"
