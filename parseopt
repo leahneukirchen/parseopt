@@ -27,6 +27,9 @@ fatal() {
   exit 1
 }
 
+printf %s "$flags" | sed 's/://g;s/./opt&=\
+/g'
+
 while [ $# -gt 0 ]; do
   case "$1" in
   --)
@@ -48,7 +51,7 @@ while [ $# -gt 0 ]; do
           printf 'opt%s=%s\n' "$f" "$arg"
           break;;
         *$f*)
-          printf 'opt%s=%s\n' "$f" "-$f";;
+          printf 'opt%s=${opt%s:--}%s\n' "$f" "$f" "$f";;
         *)
           fatal 'invalid option -%s\n' "$f"
       esac
